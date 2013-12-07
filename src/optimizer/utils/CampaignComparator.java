@@ -18,7 +18,7 @@ public class CampaignComparator implements Comparator<Campaign>{
         double ratioCampaign2 = o2.getImpressionsPerCampaign()/
                 o2.getValuePerCampaign();
         /*
-        We want bigger ratios at the start 
+        We want bigger ratios at the start, descending order
         */
         if(ratioCampaign1<ratioCampaign2){
             return 1;

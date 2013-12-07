@@ -15,7 +15,7 @@ public class Knapsack {
     public Knapsack() {
         this.sizeOfCampaigns = 0;
         this.totalValueOfKnapsack = 0;
-        this.campaigns = new ArrayList<Campaign>();
+        this.campaigns = new ArrayList();
     }
 
     public ArrayList<Campaign> getCampaigns() {
@@ -46,6 +46,13 @@ public class Knapsack {
         campaigns.add(campaign);
         sizeOfCampaigns+=campaign.getImpressionsPerCampaign();
         totalValueOfKnapsack+=campaign.getValuePerCampaign();
+    }
+
+    @Override
+    public String toString() {
+        return "Knapsack{" + "campaigns=" + campaigns + ", sizeOfCampaigns=" 
+                + sizeOfCampaigns + ", totalValueOfKnapsack=" 
+                + totalValueOfKnapsack + '}';
     }
     
     

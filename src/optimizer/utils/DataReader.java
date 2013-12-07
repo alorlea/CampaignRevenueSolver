@@ -57,7 +57,7 @@ public class DataReader extends PrintWriter {
                     if (line == null) {
                         return null;
                     }
-                    st = new StringTokenizer(line);
+                    st = new StringTokenizer(line,",");
                 }
                 token = st.nextToken();
             } catch (IOException e) {
