@@ -17,11 +17,14 @@ public class CampaignComparator implements Comparator<Campaign>{
                 o1.getValuePerCampaign();
         double ratioCampaign2 = o2.getImpressionsPerCampaign()/
                 o2.getValuePerCampaign();
+        /*
+        We want bigger ratios at the start 
+        */
         if(ratioCampaign1<ratioCampaign2){
-            return -1;
+            return 1;
         }
         else if(ratioCampaign1>ratioCampaign2){
-            return 1;
+            return -1;
         }
         else{
             //think about ties?
