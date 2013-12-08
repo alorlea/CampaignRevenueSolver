@@ -28,7 +28,7 @@ public class CampaignOptimizer {
     public static void main(String[] args) {
         File input = new File(args[0]);
         try {
-            
+
             BufferedReader reader = new BufferedReader(new FileReader(input));
             CampaignOptimizer optimizer = new CampaignOptimizer(reader);
 
@@ -42,10 +42,18 @@ public class CampaignOptimizer {
              */
             Solver knapsackSolver = new Solver(optimizer.getCampaigns(),
                     optimizer.getTotalImpressions());
-            
-            knapsackSolver.applyModularDominance();
+
             /*
-             Generate the solution with dynamic programming
+             First impose ordering of items in order of their best ratio 
+             impression/value.
+             Then Remove the items that are dominated by the best item by more
+             than 40%
+             */
+            knapsackSolver.applyPriorityCampaigns();
+            knapsackSolver.applyDominance(40.0);
+            
+            /*
+             Generate the solution with dynamic programming and optimizations
              */
             knapsackSolver.generateSolution();
 
@@ -82,9 +90,8 @@ public class CampaignOptimizer {
 
     /**
      * Generates the campaigns by reading the information from the file path
-     * defined by the user when running this application.
-     * For improved performance for the Solver running time, we order the elements
-     * with the ratio impression/value to give priority to most profitable ones
+     * defined by the user when running this application. 
+     *
      * @throws IOException
      */
     public void preprocessing() throws IOException {
@@ -97,17 +104,14 @@ public class CampaignOptimizer {
                     Integer.parseInt(campaignData[2]));
             campaigns.add(temp);
         }
-        Collections.sort(campaigns, new CampaignComparator());
         reader.close();
     }
 
     /**
      * Generates the output for the user in the following format from a Knapsack
-     * solution previously generated. The format is as follows: 
-     * customer, number of campaigns to sell, total impressions for customer, 
-     * total revenue for customer 
-     * ... 
-     * total number of impressions , total revenue
+     * solution previously generated. The format is as follows: customer, number
+     * of campaigns to sell, total impressions for customer, total revenue for
+     * customer ... total number of impressions , total revenue
      *
      * @param solution
      */
@@ -131,18 +135,19 @@ public class CampaignOptimizer {
         System.out.println(solution.getSizeOfSolution()
                 + "," + solution.getValueOfSolution());
     }
-    
+
     /**
      * Getter of the target impressions we are looking the solution to
+     *
      * @return number of total impressions for the month
      */
-
     public int getTotalImpressions() {
         return totalImpressions;
     }
 
     /**
      * Getter of the campaigns obtained from the file and need to be scheduled
+     *
      * @return list of campaigns for this month
      */
     public ArrayList<Campaign> getCampaigns() {

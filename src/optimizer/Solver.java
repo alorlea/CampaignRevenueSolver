@@ -1,9 +1,11 @@
 package optimizer;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import optimizer.knapsack.Campaign;
 import optimizer.knapsack.Knapsack;
+import optimizer.utils.CampaignComparator;
 
 /**
  * Solver for the unbounded knapsack problem (i.e: duplicate items allowed)
@@ -42,11 +44,10 @@ public class Solver {
      * number of impressions.
      *
      * It has implemented the following optimizations: - Before generating the
-     * solution, we order the campaigns on the ratio impressions/value so we
-     * prioritize best combinations of campaigns first.
+     * solution, we expect the campaigns ordered by ratio impressions/value so
+     * we prioritize best combinations of campaigns first.
      *
      */
-
     public void generateSolution() {
         //initialize the arrays to blank knapsack
         for (int i = 0; i < subproblems.length; i++) {
@@ -133,8 +134,29 @@ public class Solver {
         solution.setCampaigns(backtrackSolution);
         return solution;
     }
+    
+    /**
+     * For improved performance for the Solver running time, we order the
+     * elements with the ratio impression/value to give priority to most
+     * profitable ones for the solution.
+     */
+    public void applyPriorityCampaigns() {
+        Collections.sort(campaigns, new CampaignComparator());
+    }
 
-    public void applyModularDominance() {
+    /**
+     * Executing this method before running the solver will optimize the system
+     * with a dominance relation on the items of the knapsack.
+     *
+     * If the campaigns are ordered by best ratio, we fetch the best element and
+     * we selectively discard the items which are fairly dominated by this item.
+     *
+     * If the domination is bigger than threshold those items are removed as
+     * they will never be in the optimal solution.
+     *
+     * @param threshold
+     */
+    public void applyDominance(double threshold) {
         /*
          Suppossing the array is already ordered in priority of items, first
          is the best then
@@ -145,12 +167,12 @@ public class Solver {
         double bestRatio = bestCampaign.getImpressionsPerCampaign()
                 / bestCampaign.getValuePerCampaign();
 
-        Campaign worstCampaign = campaigns.get(campaigns.size()-1);
+        Campaign worstCampaign = campaigns.get(campaigns.size() - 1);
         double ratioWorst = worstCampaign.getImpressionsPerCampaign()
                 / worstCampaign.getValuePerCampaign();
-        
-        double normalizedWorst = ratioWorst/bestRatio;
-        
+
+        double normalizedWorst = ratioWorst / bestRatio;
+
         //Add first back the best campaign first
         newSelection.add(bestCampaign);
         for (int i = 1; i < campaigns.size(); i++) {
@@ -158,12 +180,12 @@ public class Solver {
             double ratio
                     = evaluate.getImpressionsPerCampaign()
                     / evaluate.getValuePerCampaign();
-            double percentage =((ratio/bestRatio)/normalizedWorst)*100;
-            if (percentage<40.0) {
+            double percentage = ((ratio / bestRatio) / normalizedWorst) * 100;
+            if (percentage < threshold) {
                 newSelection.add(evaluate);
             }
         }
-        campaigns=newSelection;
+        campaigns = newSelection;
     }
-
+    
 }
