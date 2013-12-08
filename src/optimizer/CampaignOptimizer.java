@@ -32,22 +32,32 @@ public class CampaignOptimizer {
             //DataReader reader = new DataReader(new FileInputStream(input));
             BufferedReader reader = new BufferedReader(new FileReader(input));
             CampaignOptimizer optimizer = new CampaignOptimizer(reader);
-            
+
             /*
-            Generate the data
-            */
+             Generate the data
+             */
             optimizer.preprocessing();
-            
-            Solver knapsackSolver = new Solver(optimizer.getCampaigns(), optimizer.getTotalImpressions());
-            Knapsack solution = knapsackSolver.generateSolution();
+
+            /*
+             Create solver with data
+             */
+            Solver knapsackSolver = new Solver(optimizer.getCampaigns(),
+                    optimizer.getTotalImpressions());
+            /*
+             Generate the solution with dynamic programming
+             */
+            knapsackSolver.generateSolution();
+
+            /*
+             Obtain the solution through backtracking of the elements
+             */
+            Knapsack solution = knapsackSolver.obtainKnapsack();
             System.out.println(solution);
-            optimizer.showResults(solution);
         } catch (FileNotFoundException e) {
             System.out.println("Error, the file could not be found");
             System.exit(1);
-        }
-        catch(IOException io){
-            
+        } catch (IOException io) {
+
         }
     }
 
@@ -57,13 +67,13 @@ public class CampaignOptimizer {
         this.campaigns = new ArrayList();
     }
 
-    public void preprocessing() throws IOException{
+    public void preprocessing() throws IOException {
         totalImpressions = Integer.parseInt(reader.readLine());
         String campaignLine;
-        while ((campaignLine=reader.readLine())!=null) {
+        while ((campaignLine = reader.readLine()) != null) {
             String[] campaignData = campaignLine.split(",");
-            Campaign temp = new Campaign(campaignData[0], 
-                    Integer.parseInt(campaignData[1]), 
+            Campaign temp = new Campaign(campaignData[0],
+                    Integer.parseInt(campaignData[1]),
                     Integer.parseInt(campaignData[2]));
             campaigns.add(temp);
         }
@@ -77,9 +87,5 @@ public class CampaignOptimizer {
 
     public ArrayList<Campaign> getCampaigns() {
         return campaigns;
-    }     
-
-    public void showResults(Knapsack solution){
-        
     }
 }

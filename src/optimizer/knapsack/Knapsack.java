@@ -1,62 +1,60 @@
 
 package optimizer.knapsack;
 
+import java.util.HashMap;
+
 /**
  *
  * @author Alberto Lorente Leal, <albll@kth.se>, <a.lorenteleal@gmail.com>
  */
 public class Knapsack {
-    private Campaign lastAddedCampaign;
-    private int sizeOfCampaigns;
-    private int totalValueOfKnapsack;
+    private HashMap<Campaign,Integer> campaigns;
+    private int valueOfSolution;
+    private int sizeOfSolution;
 
     public Knapsack() {
-        this.sizeOfCampaigns = 0;
-        this.totalValueOfKnapsack = 0;
-        this.lastAddedCampaign = new Campaign("", -1, -1);
+        this.valueOfSolution = 0;
+        this.sizeOfSolution = 0;
+        this.campaigns= new HashMap();
+    }
+
+    public Knapsack(int valueOfSolution, int sizeOfSolution) {
+        this.valueOfSolution = valueOfSolution;
+        this.sizeOfSolution = sizeOfSolution;
+        this.campaigns = new HashMap();
     }
     
-    public int getSizeOfCampaigns() {
-        return sizeOfCampaigns;
-    }
-
-    public void setSizeOfCampaigns(int sizeOfCampaigns) {
-        this.sizeOfCampaigns = sizeOfCampaigns;
-    }
-
-    public int getTotalValueOfKnapsack() {
-        return totalValueOfKnapsack;
-    }
-
-    public void setTotalValueOfKnapsack(int totalValueOfKnapsack) {
-        this.totalValueOfKnapsack = totalValueOfKnapsack;
-    }
     
-    public void addCampaign(Campaign campaign){
-        lastAddedCampaign = campaign;
-        sizeOfCampaigns+=campaign.getImpressionsPerCampaign();
-        totalValueOfKnapsack+=campaign.getValuePerCampaign();
+    public int getValueOfSolution() {
+        return valueOfSolution;
     }
 
-    public Campaign getLastAddedCampaign() {
-        return lastAddedCampaign;
+    public void setValueOfSolution(int valueOfSolution) {
+        this.valueOfSolution = valueOfSolution;
     }
 
-    public void setLastAddedCampaign(Campaign lastAddedCampaign) {
-        this.lastAddedCampaign = lastAddedCampaign;
+    public int getSizeOfSolution() {
+        return sizeOfSolution;
     }
 
-    
+    public void setSizeOfSolution(int sizeOfSolution) {
+        this.sizeOfSolution = sizeOfSolution;
+    }
+
+    public HashMap<Campaign, Integer> getCampaigns() {
+        return campaigns;
+    }
+
+    public void setCampaigns(HashMap<Campaign, Integer> campaigns) {
+        this.campaigns = campaigns;
+    }
+
     @Override
     public String toString() {
-        return "Knapsack{" + "lastAddedCampaign=" + lastAddedCampaign 
-                + ", sizeOfCampaigns=" + sizeOfCampaigns 
-                + ", totalValueOfKnapsack=" + totalValueOfKnapsack + '}';
+        return "Knapsack{" + "campaigns=" + campaigns 
+                + ", valueOfSolution=" + valueOfSolution 
+                + ", sizeOfSolution=" + sizeOfSolution + '}';
     }
-
-   
-
-    
     
     
 }
