@@ -6,11 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import optimizer.knapsack.Campaign;
 import optimizer.knapsack.Knapsack;
-import optimizer.utils.CampaignComparator;
 
 /**
  * Campaign optimizer allows the user to obtain the most optimal solution on the
@@ -50,7 +48,7 @@ public class CampaignOptimizer {
              than 40%
              */
             knapsackSolver.applyPriorityCampaigns();
-            knapsackSolver.applyDominance(40.0);
+            knapsackSolver.applyDominance();
             
             /*
              Generate the solution with dynamic programming and optimizations

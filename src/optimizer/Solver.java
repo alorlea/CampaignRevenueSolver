@@ -43,9 +43,6 @@ public class Solver {
      * Running time O(nC) where n is the number of campaigns and C the maximum
      * number of impressions.
      *
-     * It has implemented the following optimizations: - Before generating the
-     * solution, we expect the campaigns ordered by ratio impressions/value so
-     * we prioritize best combinations of campaigns first.
      *
      */
     public void generateSolution() {
@@ -134,11 +131,13 @@ public class Solver {
         solution.setCampaigns(backtrackSolution);
         return solution;
     }
-    
+
     /**
      * For improved performance for the Solver running time, we order the
      * elements with the ratio impression/value to give priority to most
      * profitable ones for the solution.
+     * 
+     * Sort takes O(nlogn) average case
      */
     public void applyPriorityCampaigns() {
         Collections.sort(campaigns, new CampaignComparator());
@@ -148,44 +147,30 @@ public class Solver {
      * Executing this method before running the solver will optimize the system
      * with a dominance relation on the items of the knapsack.
      *
-     * If the campaigns are ordered by best ratio, we fetch the best element and
-     * we selectively discard the items which are fairly dominated by this item.
+     * Martello and Tom algorithm for dominance relations
      *
-     * If the domination is bigger than threshold those items are removed as
-     * they will never be in the optimal solution.
+     * If the campaigns are ordered by impression/weight ratio, we fetch the
+     * best element and we selectively discard the items which are fairly
+     * dominated by this item.
+     * 
+     * This part takes O(mn)
      *
-     * @param threshold
      */
-    public void applyDominance(double threshold) {
-        /*
-         Suppossing the array is already ordered in priority of items, first
-         is the best then
-         */
-        ArrayList<Campaign> newSelection = new ArrayList();
-
-        Campaign bestCampaign = campaigns.get(0);
-        double bestRatio = bestCampaign.getImpressionsPerCampaign()
-                / bestCampaign.getValuePerCampaign();
-
-        Campaign worstCampaign = campaigns.get(campaigns.size() - 1);
-        double ratioWorst = worstCampaign.getImpressionsPerCampaign()
-                / worstCampaign.getValuePerCampaign();
-
-        double normalizedWorst = ratioWorst / bestRatio;
-
-        //Add first back the best campaign first
-        newSelection.add(bestCampaign);
-        for (int i = 1; i < campaigns.size(); i++) {
-            Campaign evaluate = campaigns.get(i);
-            double ratio
-                    = evaluate.getImpressionsPerCampaign()
-                    / evaluate.getValuePerCampaign();
-            double percentage = ((ratio / bestRatio) / normalizedWorst) * 100;
-            if (percentage < threshold) {
-                newSelection.add(evaluate);
+    public void applyDominance() {
+        int m = campaigns.size();
+        for(int i=0;i<m-1;i++){
+            Campaign temp1 = campaigns.get(i);
+            for(int j=i+1;j<m-1;j++){
+                Campaign temp2 = campaigns.get(j);
+                if((temp1.getImpressionsPerCampaign()
+                        *temp2.getValuePerCampaign())
+                        <temp2.getImpressionsPerCampaign()){
+                    campaigns.remove(j);
+                    m--;
+                }
+                    
             }
         }
-        campaigns = newSelection;
     }
-    
+
 }
