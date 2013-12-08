@@ -1,4 +1,3 @@
-
 package optimizer.utils;
 
 import java.util.Comparator;
@@ -18,16 +17,15 @@ public class CampaignComparator implements Comparator<Campaign>{
         double ratioCampaign2 = o2.getImpressionsPerCampaign()/
                 o2.getValuePerCampaign();
         /*
-        We want bigger ratios at the start, descending order
+        We want impressions with higher first
         */
         if(ratioCampaign1<ratioCampaign2){
-            return 1;
-        }
-        else if(ratioCampaign1>ratioCampaign2){
             return -1;
         }
+        else if(ratioCampaign1>ratioCampaign2){
+            return 1;
+        }
         else{
-            //think about ties?
             return 0;
         }
     }

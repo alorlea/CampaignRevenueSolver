@@ -1,9 +1,11 @@
-
 package optimizer.knapsack;
 
 import java.util.HashMap;
 
 /**
+ * Representation of a knapsack for the optimal solution.
+ * It will have the value of the optimal knapsack, the size of the solution
+ * and the items that compose the optimal solution
  *
  * @author Alberto Lorente Leal, <albll@kth.se>, <a.lorenteleal@gmail.com>
  */

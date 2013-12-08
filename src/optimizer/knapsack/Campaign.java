@@ -3,7 +3,9 @@ package optimizer.knapsack;
 import java.util.Objects;
 
 /**
- *
+ * Representation of a Campaign with the name of the customer, impressions 
+ * for each campaign and the value for each campaign
+ * 
  * @author Alberto Lorente Leal, <albll@kth.se>, <a.lorenteleal@gmail.com>
  */
 public class Campaign {
@@ -12,6 +14,12 @@ public class Campaign {
     private int impressionsPerCampaign;
     private int valuePerCampaign;
 
+    /**
+     * Constructor of Campaign
+     * @param customer
+     * @param impressionsPerCampaign
+     * @param valuePerCampaign 
+     */
     public Campaign(String customer, int impressionsPerCampaign, 
             int valuePerCampaign) {
         this.customer = customer;
@@ -19,6 +27,7 @@ public class Campaign {
         this.valuePerCampaign = valuePerCampaign;
     }
 
+    
     public String getCustomer() {
         return customer;
     }
