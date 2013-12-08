@@ -1,32 +1,21 @@
 
 package optimizer.knapsack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  *
  * @author Alberto Lorente Leal, <albll@kth.se>, <a.lorenteleal@gmail.com>
  */
 public class Knapsack {
-    private HashMap<Campaign,Integer> campaigns;
+    private Campaign lastAddedCampaign;
     private int sizeOfCampaigns;
     private int totalValueOfKnapsack;
 
     public Knapsack() {
         this.sizeOfCampaigns = 0;
         this.totalValueOfKnapsack = 0;
-        this.campaigns = new HashMap();
+        this.lastAddedCampaign = new Campaign("", -1, -1);
     }
-
-    public HashMap<Campaign,Integer> getCampaigns() {
-        return campaigns;
-    }
-
-    public void setCampaigns(HashMap<Campaign,Integer> campaigns) {
-        this.campaigns = campaigns;
-    }
-
+    
     public int getSizeOfCampaigns() {
         return sizeOfCampaigns;
     }
@@ -44,23 +33,28 @@ public class Knapsack {
     }
     
     public void addCampaign(Campaign campaign){
-        if(campaigns.containsKey(campaign)){
-            Integer value = campaigns.get(campaign);
-            campaigns.put(campaign, value+1);
-        }
-        else{
-            campaigns.put(campaign, 0);
-        }
+        lastAddedCampaign = campaign;
         sizeOfCampaigns+=campaign.getImpressionsPerCampaign();
         totalValueOfKnapsack+=campaign.getValuePerCampaign();
     }
 
+    public Campaign getLastAddedCampaign() {
+        return lastAddedCampaign;
+    }
+
+    public void setLastAddedCampaign(Campaign lastAddedCampaign) {
+        this.lastAddedCampaign = lastAddedCampaign;
+    }
+
+    
     @Override
     public String toString() {
-        return "Knapsack{" + "campaigns=" + campaigns + ", sizeOfCampaigns=" 
-                + sizeOfCampaigns + ", totalValueOfKnapsack=" 
-                + totalValueOfKnapsack + '}';
+        return "Knapsack{" + "lastAddedCampaign=" + lastAddedCampaign 
+                + ", sizeOfCampaigns=" + sizeOfCampaigns 
+                + ", totalValueOfKnapsack=" + totalValueOfKnapsack + '}';
     }
+
+   
 
     
     

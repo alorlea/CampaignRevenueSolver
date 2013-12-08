@@ -6,7 +6,6 @@
 package optimizer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import optimizer.knapsack.Campaign;
 import optimizer.knapsack.Knapsack;
 
@@ -22,12 +21,14 @@ public class Solver {
     public Solver(ArrayList<Campaign> campaigns, int maxImpressions) {
         this.campaigns = campaigns;
         this.subproblems = new Knapsack[maxImpressions + 1];
-        Arrays.fill(subproblems, new Knapsack());
-        subproblems[0].setSizeOfCampaigns(0);
-        subproblems[0].setTotalValueOfKnapsack(0);
+        //Arrays.fill(subproblems, new Knapsack());
     }
 
     public Knapsack generateSolution() {
+        //initialize the arrays to blank knapsack
+        for(int i= 0; i<subproblems.length;i++){
+            subproblems[i]=new Knapsack();
+        }
 
         for (int i = 1; i < subproblems.length; i++) {
 
@@ -38,7 +39,7 @@ public class Solver {
             Knapsack actual = subproblems[i];
             //Searching aids
             Knapsack maxKnapsack = subproblems[0];
-            Campaign maxCampaign = new Campaign("", 0, 0);
+            Campaign maxCampaign = new Campaign("", -1, -1);
             /*
              first find maximum target of all the elements
              */
@@ -58,9 +59,9 @@ public class Solver {
             }
             /*
              Got candidate subproblem, check if we keep previous knapsack or get
-            new based on item
+             new based on item
              */
-            
+
             if (previous.getTotalValueOfKnapsack()
                     < maxKnapsack.getTotalValueOfKnapsack()
                     + maxCampaign.getValuePerCampaign()) {
@@ -68,18 +69,18 @@ public class Solver {
                 actual.setSizeOfCampaigns(maxKnapsack.getSizeOfCampaigns());
                 actual.setTotalValueOfKnapsack(
                         maxKnapsack.getTotalValueOfKnapsack());
-                actual.setCampaigns(maxKnapsack.getCampaigns());
-                
+                actual.addCampaign(maxCampaign);
+
                 //add the new campaign
                 actual.addCampaign(maxCampaign);
-            }
-            else{
-                actual.setCampaigns(previous.getCampaigns());
+            } else {
+                actual.setLastAddedCampaign(previous.getLastAddedCampaign());
                 actual.setSizeOfCampaigns(previous.getSizeOfCampaigns());
                 actual.setTotalValueOfKnapsack(previous.getTotalValueOfKnapsack());
             }
+
         }
-        return subproblems[subproblems.length-1];
+        return subproblems[subproblems.length - 1];
     }
 
 }
