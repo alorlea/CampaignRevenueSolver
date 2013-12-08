@@ -5,9 +5,8 @@
  */
 package optimizer;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
-import java.util.TreeSet;
 import optimizer.knapsack.Campaign;
 import optimizer.knapsack.Knapsack;
 
@@ -18,9 +17,9 @@ import optimizer.knapsack.Knapsack;
 public class Solver {
 
     private Knapsack[] subproblems;
-    private TreeSet<Campaign> campaigns;
+    private ArrayList<Campaign> campaigns;
 
-    public Solver(TreeSet<Campaign> campaigns, int maxImpressions) {
+    public Solver(ArrayList<Campaign> campaigns, int maxImpressions) {
         this.campaigns = campaigns;
         this.subproblems = new Knapsack[maxImpressions + 1];
         Arrays.fill(subproblems, new Knapsack());

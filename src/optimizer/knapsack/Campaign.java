@@ -61,7 +61,7 @@ public class Campaign {
             return false;
         }
         final Campaign other = (Campaign) obj;
-        if (!Objects.equals(this.customer, other.customer)) {
+        if (!other.getCustomer().equals(this.customer)){
             return false;
         }
         if (this.impressionsPerCampaign != other.impressionsPerCampaign) {

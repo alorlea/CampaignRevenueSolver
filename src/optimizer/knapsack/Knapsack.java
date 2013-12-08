@@ -50,7 +50,7 @@ public class Knapsack {
 
     @Override
     public String toString() {
-        return "Knapsack{" + "campaigns=" + campaigns + ", sizeOfCampaigns=" 
+        return "Knapsack{sizeOfCampaigns=" 
                 + sizeOfCampaigns + ", totalValueOfKnapsack=" 
                 + totalValueOfKnapsack + '}';
     }
