@@ -24,7 +24,7 @@ public class CampaignOptimizer {
 
     private final BufferedReader reader;
     private int totalImpressions;
-    private ArrayList<Campaign> campaigns;
+    private final ArrayList<Campaign> campaigns;
 
     public static void main(String[] args) {
         File input = new File(args[0]);
@@ -40,8 +40,8 @@ public class CampaignOptimizer {
             
             Solver knapsackSolver = new Solver(optimizer.getCampaigns(), optimizer.getTotalImpressions());
             Knapsack solution = knapsackSolver.generateSolution();
-            
             System.out.println(solution);
+            optimizer.showResults(solution);
         } catch (FileNotFoundException e) {
             System.out.println("Error, the file could not be found");
             System.exit(1);
@@ -75,18 +75,11 @@ public class CampaignOptimizer {
         return totalImpressions;
     }
 
-    public void setTotalImpressions(int totalImpressions) {
-        this.totalImpressions = totalImpressions;
-    }
-
     public ArrayList<Campaign> getCampaigns() {
         return campaigns;
-    }
+    }     
 
-    public void setCampaigns(ArrayList<Campaign> campaigns) {
-        this.campaigns = campaigns;
+    public void showResults(Knapsack solution){
+        
     }
-    
-    
-
 }

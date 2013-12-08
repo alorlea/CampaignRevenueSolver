@@ -72,6 +72,13 @@ public class Campaign {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Campaign{" + "customer=" + customer + 
+                ", impressionsPerCampaign=" + impressionsPerCampaign 
+                + ", valuePerCampaign=" + valuePerCampaign + '}';
+    }
     
     
     

@@ -2,27 +2,28 @@
 package optimizer.knapsack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *
  * @author Alberto Lorente Leal, <albll@kth.se>, <a.lorenteleal@gmail.com>
  */
 public class Knapsack {
-    private ArrayList<Campaign> campaigns;
+    private HashMap<Campaign,Integer> campaigns;
     private int sizeOfCampaigns;
     private int totalValueOfKnapsack;
 
     public Knapsack() {
         this.sizeOfCampaigns = 0;
         this.totalValueOfKnapsack = 0;
-        this.campaigns = new ArrayList();
+        this.campaigns = new HashMap();
     }
 
-    public ArrayList<Campaign> getCampaigns() {
+    public HashMap<Campaign,Integer> getCampaigns() {
         return campaigns;
     }
 
-    public void setCampaigns(ArrayList<Campaign> campaigns) {
+    public void setCampaigns(HashMap<Campaign,Integer> campaigns) {
         this.campaigns = campaigns;
     }
 
@@ -43,17 +44,25 @@ public class Knapsack {
     }
     
     public void addCampaign(Campaign campaign){
-        campaigns.add(campaign);
+        if(campaigns.containsKey(campaign)){
+            Integer value = campaigns.get(campaign);
+            campaigns.put(campaign, value+1);
+        }
+        else{
+            campaigns.put(campaign, 0);
+        }
         sizeOfCampaigns+=campaign.getImpressionsPerCampaign();
         totalValueOfKnapsack+=campaign.getValuePerCampaign();
     }
 
     @Override
     public String toString() {
-        return "Knapsack{sizeOfCampaigns=" 
+        return "Knapsack{" + "campaigns=" + campaigns + ", sizeOfCampaigns=" 
                 + sizeOfCampaigns + ", totalValueOfKnapsack=" 
                 + totalValueOfKnapsack + '}';
     }
+
+    
     
     
 }
