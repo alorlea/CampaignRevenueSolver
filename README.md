@@ -32,6 +32,7 @@ customer,number of campaigns to sell,total impressions for customer,total revenu
 total number of impressions,total revenue
 
 References:
+
 -http://en.wikipedia.org/wiki/Knapsack_problem#Unbounded_knapsack_problem
 
 -S. Martello, P. Toth, Knapsack Problems: Algorithms and Computer Implementation, John Wiley and Sons, 1990
