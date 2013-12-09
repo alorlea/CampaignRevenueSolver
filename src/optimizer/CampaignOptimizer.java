@@ -49,7 +49,7 @@ public class CampaignOptimizer {
              */
             knapsackSolver.applyPriorityCampaigns();
             knapsackSolver.applyDominance();
-            
+
             /*
              Generate the solution with dynamic programming and optimizations
              */
@@ -88,7 +88,7 @@ public class CampaignOptimizer {
 
     /**
      * Generates the campaigns by reading the information from the file path
-     * defined by the user when running this application. 
+     * defined by the user when running this application.
      *
      * @throws IOException
      */
@@ -117,10 +117,18 @@ public class CampaignOptimizer {
 
         Iterator<Campaign> solutionCampaigns
                 = solution.getCampaigns().keySet().iterator();
+        
+        int totalCapacity = 0;
+        
         while (solutionCampaigns.hasNext()) {
             StringBuilder builder = new StringBuilder();
             Campaign element = solutionCampaigns.next();
             Integer numCampaigns = solution.getCampaigns().get(element);
+            
+            //generate capacity of knapsack
+            totalCapacity += element.getImpressionsPerCampaign()
+                    * numCampaigns.intValue();
+            
             builder.append(element.getCustomer()).append(",")
                     .append(numCampaigns.intValue()).append(",")
                     .append(element.getImpressionsPerCampaign()
@@ -128,9 +136,11 @@ public class CampaignOptimizer {
                     .append(",")
                     .append(element.getValuePerCampaign()
                             * numCampaigns.intValue());
+            //print formatted campaign
             System.out.println(builder.toString());
         }
-        System.out.println(solution.getSizeOfSolution()
+        //last line to print
+        System.out.println(totalCapacity
                 + "," + solution.getValueOfSolution());
     }
 

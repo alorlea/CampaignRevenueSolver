@@ -18,7 +18,7 @@ public class Solver {
     private Campaign[] campaignsAdded;
     private ArrayList<Campaign> campaigns;
     private int valueSolution;
-    private int capacityOfSolution;
+    private int backtrackOfSolution;
 
     /**
      * Constructor for the solver, initialize it with the campaigns to be used
@@ -31,7 +31,7 @@ public class Solver {
         this.campaigns = campaigns;
         this.subproblems = new int[maxImpressions + 1];
         this.campaignsAdded = new Campaign[maxImpressions + 1];
-        this.capacityOfSolution = 0;
+        this.backtrackOfSolution = 0;
         this.valueSolution = 0;
     }
 
@@ -86,9 +86,8 @@ public class Solver {
                 //Update problemknapsack based on max
                 subproblems[i] = maxKnapsack + maxCampaign.getValuePerCampaign();
                 campaignsAdded[i] = maxCampaign;
-                //We made update so this means that if it is the last one, the
-                //ideal capacity is the position
-                capacityOfSolution = i;
+                //We made update so this means that if it is the last one
+                backtrackOfSolution = i;
 //                System.out.println(i);
 //                System.out.println(i-1);
 //                System.out.println(previous);
@@ -99,7 +98,7 @@ public class Solver {
             }
 
         }
-        valueSolution = subproblems[capacityOfSolution];
+        valueSolution = subproblems[subproblems.length-1];
     }
 
     /**
@@ -112,12 +111,12 @@ public class Solver {
      * the solution
      */
     public Knapsack obtainKnapsack() {
-        Knapsack solution = new Knapsack(valueSolution, capacityOfSolution);
+        Knapsack solution = new Knapsack(valueSolution, backtrackOfSolution);
         HashMap<Campaign, Integer> backtrackSolution = new HashMap();
 
         //Start backtrack procedure to recover elements
-        Campaign lastCampaign = campaignsAdded[capacityOfSolution];
-        int i = capacityOfSolution;
+        Campaign lastCampaign = campaignsAdded[backtrackOfSolution];
+        int i = backtrackOfSolution;
         while (i > 0) {
             //check if the campaign is already there and update its counter
             if (backtrackSolution.containsKey(lastCampaign)) {
