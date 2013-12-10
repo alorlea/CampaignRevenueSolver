@@ -161,8 +161,10 @@ public class Solver {
             Campaign temp1 = campaigns.get(i);
             for(int j=i+1;j<m-1;j++){
                 Campaign temp2 = campaigns.get(j);
-                if((temp1.getImpressionsPerCampaign()
+                //(wi*pj/pi)<wj
+                if(((temp1.getImpressionsPerCampaign()
                         *temp2.getValuePerCampaign())
+                        /temp1.getValuePerCampaign())
                         <temp2.getImpressionsPerCampaign()){
                     campaigns.remove(j);
                     m--;
