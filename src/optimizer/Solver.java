@@ -47,58 +47,31 @@ public class Solver {
      */
     public void generateSolution() {
         //initialize the arrays to blank knapsack
-        for (int i = 0; i < subproblems.length; i++) {
-            campaignsAdded[i] = new Campaign("", 0, 0);
-        }
 
         for (int i = 1; i < subproblems.length; i++) {
 
             /*
              Start dynamic programming approach
              */
-            int previous = subproblems[i - 1];
-            //Searching aids
-            int maxKnapsack = -1;
-            Campaign maxCampaign = new Campaign("", 0, 0);
+
             /*
              first find maximum target of all the elements
              */
             for (Campaign element : campaigns) {
                 //target capacity 
-                int targetKnapsack = i - element.getImpressionsPerCampaign();
-                if (targetKnapsack >= 0) {
-                    //see the value of this knapsack
-                    int temp = subproblems[targetKnapsack];
-                    //Check if this knapsack optimizes the maximum value and
-                    //the element that does it
-                    if (maxKnapsack < temp + element.getValuePerCampaign()) {
-                        maxKnapsack = temp;
-                        maxCampaign = element;
-                    }
+                int itemWeight = element.getImpressionsPerCampaign();
+                int itemValue = element.getValuePerCampaign();
+                if (itemWeight<=i
+                        &&(itemValue+subproblems[i-itemWeight])>subproblems[i]) {
+                        //this updates the entry everytime and eventually will 
+                        //not change anymore if the value is maximum
+                        subproblems[i]= itemValue+subproblems[i-itemWeight];
+                        campaignsAdded[i]=element;
                 }
             }
-
-            /*
-             Got candidate subproblem, check if we keep previous knapsack or get
-             new based on item
-             */
-            if (previous < maxKnapsack + maxCampaign.getValuePerCampaign()) {
-                //Update problemknapsack based on max
-                subproblems[i] = maxKnapsack + maxCampaign.getValuePerCampaign();
-                campaignsAdded[i] = maxCampaign;
-                //We made update so this means that if it is the last one
-                backtrackOfSolution = i;
-//                System.out.println(i);
-//                System.out.println(i-1);
-//                System.out.println(previous);
-//                System.out.println(actual);
-            } else {
-                subproblems[i] = subproblems[i - 1];
-                campaignsAdded[i] = campaignsAdded[i - 1];
-            }
-
         }
         valueSolution = subproblems[subproblems.length-1];
+        backtrackOfSolution=subproblems.length-1;
     }
 
     /**
@@ -117,8 +90,9 @@ public class Solver {
         //Start backtrack procedure to recover elements
         Campaign lastCampaign = campaignsAdded[backtrackOfSolution];
         int i = backtrackOfSolution;
-        while (i > 0) {
+        while (lastCampaign!=null&&i >= 0) {
             //check if the campaign is already there and update its counter
+            //note avoid the null reference, that is for empty knapsack!
             if (backtrackSolution.containsKey(lastCampaign)) {
                 Integer counter = backtrackSolution.get(lastCampaign);
                 backtrackSolution.put(lastCampaign, counter + 1);
@@ -126,6 +100,7 @@ public class Solver {
                 backtrackSolution.put(lastCampaign, 1);
             }
             i -= lastCampaign.getImpressionsPerCampaign();
+            lastCampaign=campaignsAdded[i];
         }
         solution.setCampaigns(backtrackSolution);
         return solution;
@@ -146,7 +121,7 @@ public class Solver {
      * Executing this method before running the solver will optimize the system
      * with a dominance relation on the items of the knapsack.
      *
-     * Martello and Tom algorithm for dominance relations
+     * Martello and Toth algorithm for dominance relations
      *
      * If the campaigns are ordered by impression/weight ratio, we fetch the
      * best element and we selectively discard the items which are fairly
