@@ -44,8 +44,7 @@ public class CampaignOptimizer {
             /*
              First impose ordering of items in order of their best ratio 
              impression/value.
-             Then Remove the items that are dominated by the best item by more
-             than 40%
+             Then apply dominance relation
              */
             knapsackSolver.applyPriorityCampaigns();
             knapsackSolver.applyDominance();
