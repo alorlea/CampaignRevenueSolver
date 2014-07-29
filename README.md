@@ -1,4 +1,4 @@
-Campaign Revenue Solvre
+Campaign Revenue Solver
 =================
 
 This project tries to solve a java puzzle which involves in using the unbounded knapsack algorithm to choose how many campaigns to sell to what customers in order to maximize the revenue.
